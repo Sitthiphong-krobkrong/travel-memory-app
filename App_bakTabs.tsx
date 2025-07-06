@@ -1,11 +1,17 @@
 import { SafeAreaView, View, Text, StyleSheet, StatusBar } from 'react-native';
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import TripStack from './screenStacks/TripStack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+// import HomeScreen from './screens/HomeScreen';
+import ProfileScreen from './screens/ProfileScreen';
 import SettingsScreen from './screens/SettingsScreen';
+// import TripDetailScreen from './screens/TripDetailScreen';
+// import AddTripScreen from './screens/AddTripScreen';
+import TripListScreen from './screens/TripListScreen';
+import TripEditScreen from './screens/TripEditScreen';
 const Icon = require('react-native-vector-icons/MaterialCommunityIcons').default;
 const Tab = createBottomTabNavigator();
+
 export default function App() {
   return (
     <NavigationContainer>
@@ -21,24 +27,50 @@ export default function App() {
           headerTitleStyle: { fontFamily: 'Kanit-Bold', fontSize: 22 }
         }}
       >
-        <Tab.Screen
-          name="TripList"
-          component={TripStack}
+        {/* <Tab.Screen name="Home" component={HomeScreen}
           options={{
-            tabBarLabel: 'รายการ'
-            , headerShown: false // << ซ่อน header ของ Tab
-            , tabBarIcon: ({ color, size }) => (
+            //tabBarLabel: 'หน้าหลัก',
+            tabBarIcon: ({ color, size }) => (
+              <Icon name="home-outline" size={size} color={color} />
+            ),
+          }}
+        /> */}
+        <Tab.Screen name="TripList" component={TripListScreen}
+          options={{
+            tabBarLabel: 'รายการ',
+            tabBarIcon: ({ color, size }) => (
               <Icon name="view-list-outline" size={size} color={color} />
             ),
           }}
         />
-        <Tab.Screen
-          name="Settings"
-          component={SettingsScreen}
+        <Tab.Screen name="AddEdit" component={TripEditScreen}
           options={{
-            tabBarLabel: 'ตั้งค่า'
-            , headerShown: false // << ซ่อน header ของ Tab
-            , tabBarIcon: ({ color, size }) => (
+            tabBarLabel: 'เพิ่ม/แก้ไข',
+            tabBarIcon: ({ color, size }) => (
+              <Icon name="square-edit-outline" size={size} color={color} />
+            ),
+          }}
+        />
+        {/* <Tab.Screen name="Addtrip" component={AddTripScreen}
+          options={{
+            //tabBarLabel: 'เพิ่มทริป',
+            tabBarIcon: ({ color, size }) => (
+              <Icon name="plus-box-outline" size={size} color={color} />
+            ),
+          }}
+        /> */}
+        {/* <Tab.Screen name="Profile" component={ProfileScreen}
+          options={{
+            //tabBarLabel: 'โปรไฟล์',
+            tabBarIcon: ({ color, size }) => (
+              <Icon name="account-outline" size={size} color={color} />
+            ),
+          }}
+        /> */}
+        <Tab.Screen name="ตั้งค่า" component={SettingsScreen}
+          options={{
+            tabBarLabel: 'ตั้งค่า',
+            tabBarIcon: ({ color, size }) => (
               <Icon name="cogs" size={size} color={color} />
             ),
           }}

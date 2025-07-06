@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useLayoutEffect } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -47,6 +47,7 @@ export default function TripListScreen({ navigation }) {
     // ฟังก์ชันสำหรับ render แต่ละ trip item
     // ใช้ FlatList เพื่อแสดงรายการทริป
     const renderTripItem = ({ item }) => (
+        console.log(item),
         <View style={styles.tripCard}>
             {item.photo ? (
                 <Image source={{ uri: item.photo }} style={styles.tripPhoto} />
@@ -68,6 +69,19 @@ export default function TripListScreen({ navigation }) {
         </View>
     );
 
+    // เพิ่มปุ่ม + ที่ header ขวาบน
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('TripEdit')}
+                    style={{ marginRight: 8 }}
+                >
+                </TouchableOpacity>
+            ),
+        });
+    }, [navigation]);
+
     return (
         <View style={{ flex: 1, backgroundColor: '#F7FAFC', padding: 16 }}>
             <FlatList
@@ -77,6 +91,15 @@ export default function TripListScreen({ navigation }) {
                 contentContainerStyle={{ paddingVertical: 10 }}
                 ListEmptyComponent={<Text style={{ color: '#aaa', textAlign: 'center', marginTop: 48 }}>ยังไม่มีทริป</Text>}
             />
+
+            {/* Floating Add Button */}
+            <TouchableOpacity
+                style={styles.fab}
+                onPress={() => navigation.navigate('TripEdit')}
+                activeOpacity={0.85}
+            >
+                <MaterialIcons name="add" size={38} color="#fff" />
+            </TouchableOpacity>
         </View>
     );
 }
@@ -104,4 +127,20 @@ const styles = StyleSheet.create({
     tripTitle: { fontFamily: 'Kanit-Bold', fontSize: 18, color: '#C62828', marginBottom: 2 },
     tripDate: { fontFamily: 'Kanit-Regular', fontSize: 13, color: '#888', marginBottom: 2 },
     tripDetail: { fontFamily: 'Kanit-Regular', fontSize: 15, color: '#222' },
+    fab: {
+        position: 'absolute',
+        bottom: 32,  // ห่างจากขอบล่างเท่าไหร่ ปรับได้
+        alignSelf: 'center',
+        backgroundColor: '#C62828',
+        borderRadius: 32,
+        width: 64,
+        height: 64,
+        justifyContent: 'center',
+        alignItems: 'center',
+        elevation: 6, // เงา Android
+        shadowColor: '#000', // เงา iOS
+        shadowOpacity: 0.22,
+        shadowOffset: { width: 0, height: 4 },
+        shadowRadius: 8,
+    },
 });
